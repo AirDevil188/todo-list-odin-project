@@ -1,0 +1,146 @@
+@import url(https://fonts.googleapis.com/css2?family=Roboto+Mono:wght@400;500;600;700&display=swap);
+:root {
+  --header-bg-color: #404040;
+  --submit-button-color: #4caf50;
+  --cancel-button-color: #f44336;
+}
+
+/* general basic */
+
+html {
+  box-sizing: border-box;
+}
+
+*,
+*::before,
+*::after {
+  box-sizing: inherit;
+}
+
+body {
+  padding: 0;
+  margin: 0;
+  font-family: "Roboto Mono", monospace;
+}
+
+/* google icons */
+
+.material-symbols-outlined {
+  font-variation-settings: "FILL" 0, "wght" 400, "GRAD" 0, "opsz" 48;
+}
+
+/* header */
+
+header {
+  text-transform: uppercase;
+  color: white;
+  background-color: var(--header-bg-color);
+  padding: 1rem;
+}
+
+/* button */
+button {
+  width: 100%;
+  color: #000;
+  text-align: left;
+  cursor: pointer;
+  display: block;
+  border: none;
+  padding: 1rem;
+  background-color: #ccc;
+}
+
+/* grid-container */
+
+#grid-container {
+  display: grid;
+  grid-template-columns: 1fr 3fr;
+}
+
+.content-container {
+  display: flex;
+  flex-flow: column wrap;
+}
+
+/* left side content */
+/* left-side-content-container */
+
+.left-side-content-container {
+  grid-area: 1/1/1/2;
+  min-height: 100vh;
+  background-color: #ccc;
+  padding: 1rem;
+  line-height: 1.9;
+}
+
+/* button container - left side*/
+.default-todo-list-nav button {
+  display: flex;
+  flex-flow: row wrap;
+  gap: 1rem;
+  align-items: center;
+  font-weight: 600;
+}
+/* container for 'projects' */
+.add-project-container {
+  display: flex;
+  flex-flow: row wrap;
+  gap: 10px;
+  justify-content: center;
+}
+/* button container and buttons for adding projects */
+.button-container > button {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 120px;
+  font-weight: 900;
+  text-transform: uppercase;
+  text-align: center;
+  height: 23px;
+  border: none;
+  border-radius: 15px;
+}
+
+/* to-do container for to do tasks */
+.to-do-task-container > form {
+  display: flex;
+  flex-flow: column wrap;
+  padding: 1rem;
+}
+
+form {
+  gap: 1rem;
+}
+
+.to-do-task-button-container {
+  display: flex;
+  flex-flow: row wrap;
+  justify-content: center;
+  gap: 1rem;
+}
+
+.to-do-task-button-container > button {
+  width: 120px;
+  height: 23px;
+  display: flex;
+  flex-flow: column wrap;
+  align-items: center;
+  justify-content: center;
+}
+
+.add-to-do-task-button {
+  background-color: var(--submit-button-color);
+}
+
+.cancel-to-do-task-button {
+  background-color: var(--cancel-button-color);
+}
+
+textarea,
+input {
+  width: 100%;
+  border: none;
+  resize: none;
+}
+
