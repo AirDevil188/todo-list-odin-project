@@ -11,3 +11,5 @@ export default class ProjectManager {
     this.projects = this.projects.filter((project) => project.id !== projectID);
   }
 }
+
+export const projectManager = new ProjectManager("All Projects");

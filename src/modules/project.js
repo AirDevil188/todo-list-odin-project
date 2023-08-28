@@ -12,4 +12,14 @@ export default class Project {
   remove(taskId) {
     this.todos = this.todos.filter((todo) => todo.id !== taskId);
   }
+
+  setTitle(value) {
+    this.title = value;
+  }
+
+  getTitle(value) {
+    this.title = value;
+  }
 }
+
+export const inboxProject = new Project("Inbox");
