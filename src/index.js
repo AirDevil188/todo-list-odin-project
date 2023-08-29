@@ -3,7 +3,9 @@ import UI from "./modules/ui.js";
 import Project from "./modules/project";
 import ToDo from "./modules/todo";
 import { compareAsc, format } from "date-fns";
-import ProjectManager from "./modules/projectManager";
+import ProjectManager, { projectManager } from "./modules/projectManager";
+import { te } from "date-fns/locale";
+import delProject from "./modules/controller/deleteProject";
 
 document.addEventListener("DOMContentLoaded", UI.loadHome);
 
@@ -22,6 +24,7 @@ document.addEventListener("DOMContentLoaded", UI.loadHome);
 // console.table(myProject);
 
 // let myProject2 = new Project("Reading");
+// projectManager.add(myProject2);
 // let myTask3 = new ToDo("Read a book by George Orwell", "I must finally read a book by George Orwell: 1984", "low", "datePlaceHolder", false);
 // let myTask4 = new ToDo("Read a book by Philip K. Dick", "Read, A Scanner Darkly", "low", "dueDatePlaceholder", false);
 
@@ -85,3 +88,5 @@ document.addEventListener("DOMContentLoaded", UI.loadHome);
 // myProject1.add(myTask3);
 // myProject1.add(myTask4);
 // myProject1.render();
+
+// console.log(projectManager);

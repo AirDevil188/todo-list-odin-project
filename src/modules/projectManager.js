@@ -1,3 +1,5 @@
+import Project from "./project";
+
 export default class ProjectManager {
   constructor(title, projects) {
     this.title = title;

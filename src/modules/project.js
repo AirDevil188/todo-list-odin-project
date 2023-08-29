@@ -17,8 +17,19 @@ export default class Project {
     this.title = value;
   }
 
-  getTitle(value) {
-    this.title = value;
+  getTitle() {
+    return this.title;
+  }
+  findById(id) {
+    return this.todos.find((todo) => todo.id === id);
+  }
+
+  findF(findFunction) {
+    return this.todos.find(findFunction);
+  }
+
+  getID(elem) {
+    return elem.id;
   }
 }
 
