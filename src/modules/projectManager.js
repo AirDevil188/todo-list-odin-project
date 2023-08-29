@@ -12,6 +12,10 @@ export default class ProjectManager {
   remove(projectID) {
     this.projects = this.projects.filter((project) => project.id !== projectID);
   }
+
+  setTitle(value) {
+    this.title = value;
+  }
 }
 
 export const projectManager = new ProjectManager("All Projects");

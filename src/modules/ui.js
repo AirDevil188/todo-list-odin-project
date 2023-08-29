@@ -1,12 +1,13 @@
 import Project, { inboxProject } from "./project";
 import ProjectManager, { createProject, projectManager } from "./projectManager";
 import ToDo from "./todo";
-import delProject from "./controller/deleteProject";
+import deleteProject from "./controller/deleteProject";
+import initializeButtons from "./controller/initializeButtons";
 
 export default class UI {
   static loadHome() {
     UI.openToDoCategoryPage("Inbox", document.querySelector("#button-inbox"));
-    UI.initializeButtons();
+    initializeButtons();
     UI.loadProjectManager();
   }
 
@@ -46,33 +47,29 @@ export default class UI {
     UI.setAttributes(headingToDo, { class: "page-heading" });
   }
 
-  static initializeButtons() {
-    UI.getMainContainer().addEventListener("click", (e) => {
-      if (e.target.classList.contains("add-task-to-do-form-button")) {
-        UI.appendTaskForm();
-      }
-    });
-
-    UI.getProjectsButtonContainer().addEventListener("click", (e) => {
-      if (e.target.classList.contains("add-project-button-add")) {
-        UI.addProject();
-      }
-    });
-
-    UI.getProjectsContainer().addEventListener("click", (e) => {
-      if (e.target.classList.contains("delete-button")) {
-        delProject(e);
-      }
-    });
-    UI.getProjectsContainer().addEventListener("click", (e) => {
-      if (e.target.classList.contains("project-button")) {
-        UI.clear();
-        UI.loadToDoContent(`${e.target.textContent}`);
-      }
-    });
+  static deleteProjectFromTheDOM(e) {
+    e.target.parentElement.remove();
   }
 
-  static removeProject() {}
+  static appendProjectForm() {
+    const projectCreationFormContainer = document.createElement("div");
+    const projectTitleInput = document.createElement("input");
+    const addProjectIcon = document.createElement("span");
+    const cancelProjectIcon = document.createElement("span");
+
+    UI.getUserProjectListContainer().appendChild(projectCreationFormContainer);
+    projectCreationFormContainer.appendChild(projectTitleInput);
+    projectCreationFormContainer.appendChild(addProjectIcon);
+    projectCreationFormContainer.appendChild(cancelProjectIcon);
+
+    addProjectIcon.textContent = "add_task";
+    cancelProjectIcon.textContent = "cancel";
+
+    UI.setAttributes(projectCreationFormContainer, { class: "project-creation-form-container" });
+    UI.setAttributes(addProjectIcon, { class: "material-symbols-outlined  add-project-button-add" });
+    UI.setAttributes(cancelProjectIcon, { class: "material-symbols-outlined delete-button" });
+    UI.setAttributes(projectTitleInput, { type: "input", class: "input-project-popup" });
+  }
 
   static addProject() {
     const projectInputField = document.querySelector(".input-project-popup").value;
@@ -82,20 +79,21 @@ export default class UI {
     const projectContainer = document.createElement("div");
     const projectButton = document.createElement("button");
     const deleteButton = document.createElement("span");
-
-    deleteButton.classList.add("material-symbols-outlined", "delete-button");
+    const editButton = document.createElement("span");
 
     deleteButton.textContent = "delete";
-    UI.getProjectsContainer().appendChild(projectContainer);
+
+    UI.getUserProjectListContainer().appendChild(projectContainer);
+    projectContainer.appendChild(editButton);
     projectContainer.appendChild(deleteButton);
     projectContainer.appendChild(projectButton);
-    UI.setAttributes(deleteButton, { "data-id": `${project.id}` });
 
-    UI.setAttributes(projectButton, { class: "project-button", "data-id": `${project.id}` });
     UI.setAttributes(projectContainer, { class: "project-item", "data-id": `${project.id}` });
+    UI.setAttributes(projectButton, { class: "project-button", "data-id": `${project.id}` });
+    UI.setAttributes(deleteButton, { class: "material-symbols-outlined delete-button", "data-id": `${project.id}` });
+
     UI.renderProjects(projectButton);
   }
-
   static renderProjects(elem) {
     for (let i = 1; i < projectManager.projects.length; i++) {
       elem.textContent = `${projectManager.projects[i].getTitle()}`;
@@ -183,6 +181,23 @@ export default class UI {
     UI.setAttributes(cancelTaskIcon, { class: "material-symbols-outlined" });
   }
 
+  static deleteAddProjectButton() {
+    document.querySelector(".add-project-input-button").remove();
+  }
+
+  static deleteProjectCreationFormContainer() {
+    document.querySelector(".project-creation-form-container").remove();
+  }
+
+  static createAddProjectButton() {
+    const addProjectButton = document.createElement("button");
+    UI.setAttributes(addProjectButton, { class: "add-project-input-button" });
+
+    addProjectButton.textContent = "+ Add Project";
+
+    UI.getUserProjectListContainer().appendChild(addProjectButton);
+  }
+
   static clear() {
     UI.clearMainContainer();
   }
@@ -199,12 +214,16 @@ export default class UI {
     return document.querySelector(".main-container");
   }
 
-  static getProjectsButtonContainer() {
-    return document.querySelector(".button-container");
+  static getAddProjectContainer() {
+    return document.querySelector(".add-project-container");
   }
 
-  static getProjectsContainer() {
-    return document.querySelector(".add-project-container");
+  static getUserProjectListContainer() {
+    return document.querySelector(".user-project-list");
+  }
+
+  static getProjectsButtonContainer() {
+    return document.querySelector(".button-container");
   }
 
   static getProjectItemButton() {

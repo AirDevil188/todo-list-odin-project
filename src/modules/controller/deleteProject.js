@@ -1,6 +1,6 @@
 import { projectManager } from "../projectManager";
 
-export default function delProject(e) {
+export default function deleteProject(e) {
   const indexOfObject = projectManager.projects.findIndex((project) => {
     return project.id == e.target.dataset.id;
   });
