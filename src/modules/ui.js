@@ -1,8 +1,9 @@
 import Project, { inboxProject } from "./project";
-import ProjectManager, { createProject, projectManager } from "./projectManager";
+import ProjectManager, { projectManager } from "./projectManager";
 import ToDo from "./todo";
-import deleteProject from "./controller/deleteProject";
 import initializeButtons from "./controller/initializeButtons";
+import { id } from "date-fns/locale";
+import activeProject from "./controller/activeProject";
 
 export default class UI {
   static loadHome() {
@@ -12,8 +13,6 @@ export default class UI {
   }
 
   static loadProjectManager() {
-    let activeProject = `${document.querySelector(".page-heading").textContent}`;
-    console.log(activeProject);
     console.log();
     if (projectManager.projects.length === 0) {
       projectManager.add(inboxProject);
@@ -43,12 +42,6 @@ export default class UI {
     mainContainer.appendChild(addToDoTaskButton);
 
     mainContainer.appendChild(contentContainer);
-
-    UI.setAttributes(headingToDo, { class: "page-heading" });
-  }
-
-  static deleteProjectFromTheDOM(e) {
-    e.target.parentElement.remove();
   }
 
   static appendProjectForm() {
@@ -75,7 +68,6 @@ export default class UI {
     const projectInputField = document.querySelector(".input-project-popup").value;
     const project = new Project(`${projectInputField}`);
     projectManager.add(project);
-
     const projectContainer = document.createElement("div");
     const projectButton = document.createElement("button");
     const deleteButton = document.createElement("span");
@@ -94,26 +86,32 @@ export default class UI {
 
     UI.renderProjects(projectButton);
   }
+
+  static createAddProjectButton() {
+    const addProjectButton = document.createElement("button");
+    UI.setAttributes(addProjectButton, { class: "add-project-input-button" });
+
+    addProjectButton.textContent = "+ Add Project";
+
+    UI.getUserProjectListContainer().appendChild(addProjectButton);
+  }
+
+  static deleteAddProjectButton() {
+    document.querySelector(".add-project-input-button").remove();
+  }
+
+  static deleteProjectCreationFormContainer() {
+    document.querySelector(".project-creation-form-container").remove();
+  }
+
+  static deleteProjectFromTheDOM(e) {
+    e.target.parentElement.remove();
+  }
+
   static renderProjects(elem) {
     for (let i = 1; i < projectManager.projects.length; i++) {
       elem.textContent = `${projectManager.projects[i].getTitle()}`;
     }
-  }
-
-  static openToDoCategoryPage(page, pageButton) {
-    UI.loadToDoContent(page);
-  }
-
-  static openInboxPage() {
-    UI.openToDoCategoryPage("Inbox", this);
-  }
-
-  static openTodayPage() {
-    UI.openToDoCategoryPage("Today", this);
-  }
-
-  static openThisWeekPage() {
-    UI.openToDoCategoryPage("This Week", this);
   }
 
   static appendTaskForm() {
@@ -172,6 +170,8 @@ export default class UI {
     taskFormElement.appendChild(addTaskIcon);
     taskFormElement.appendChild(cancelTaskIcon);
 
+    UI.setAttributes(titleInputField, { type: "text", class: "title-input" });
+    UI.setAttributes(messageInputField, { type: "text", class: "message-input" });
     UI.setAttributes(priorityContainer, { class: "priority-container" });
     UI.setAttributes(inputPriorityLow, { type: "radio" });
     UI.setAttributes(inputPriorityMedium, { type: "radio" });
@@ -181,33 +181,15 @@ export default class UI {
     UI.setAttributes(cancelTaskIcon, { class: "material-symbols-outlined" });
   }
 
-  static deleteAddProjectButton() {
-    document.querySelector(".add-project-input-button").remove();
-  }
+  static addTask() {
+    const titleInput = "sasa";
+    const messageInput = "sasasas";
 
-  static deleteProjectCreationFormContainer() {
-    document.querySelector(".project-creation-form-container").remove();
-  }
+    const task = new ToDo(titleInput, messageInput);
 
-  static createAddProjectButton() {
-    const addProjectButton = document.createElement("button");
-    UI.setAttributes(addProjectButton, { class: "add-project-input-button" });
-
-    addProjectButton.textContent = "+ Add Project";
-
-    UI.getUserProjectListContainer().appendChild(addProjectButton);
-  }
-
-  static clear() {
-    UI.clearMainContainer();
-  }
-
-  static clearMainContainer() {
-    UI.getMainContainer().textContent = "";
-  }
-
-  static setAttributes(el, attrs) {
-    Object.keys(attrs).forEach((key) => el.setAttribute(key, attrs[key]));
+    activeProject().add(task);
+    console.log(activeProject());
+    console.log("after adding todo task ", projectManager);
   }
 
   static getMainContainer() {
@@ -228,5 +210,33 @@ export default class UI {
 
   static getProjectItemButton() {
     return document.querySelector(".project-item");
+  }
+
+  static openToDoCategoryPage(page, pageButton) {
+    UI.loadToDoContent(page);
+  }
+
+  static openInboxPage() {
+    UI.openToDoCategoryPage("Inbox", this);
+  }
+
+  static openTodayPage() {
+    UI.openToDoCategoryPage("Today", this);
+  }
+
+  static openThisWeekPage() {
+    UI.openToDoCategoryPage("This Week", this);
+  }
+
+  static clear() {
+    UI.clearMainContainer();
+  }
+
+  static clearMainContainer() {
+    UI.getMainContainer().textContent = "";
+  }
+
+  static setAttributes(el, attrs) {
+    Object.keys(attrs).forEach((key) => el.setAttribute(key, attrs[key]));
   }
 }

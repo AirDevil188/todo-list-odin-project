@@ -1,10 +1,8 @@
 import { projectManager } from "../projectManager";
 
 export default function deleteProject(e) {
-  const indexOfObject = projectManager.projects.findIndex((project) => {
-    return project.id == e.target.dataset.id;
-  });
-  console.log(indexOfObject);
-  projectManager.remove(indexOfObject);
+  const projectID = projectManager.projects.find((project) => project.id === e.target.dataset.id);
+  projectManager.remove(projectID.id);
+
   console.log(projectManager);
 }

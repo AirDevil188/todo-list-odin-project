@@ -3,6 +3,7 @@ import Project from "./project";
 export default class ProjectManager {
   constructor(title, projects) {
     this.title = title;
+
     this.projects = [];
   }
   add(project) {
@@ -15,6 +16,9 @@ export default class ProjectManager {
 
   setTitle(value) {
     this.title = value;
+  }
+  findById(id) {
+    return this.projects.find((project) => project.id === id);
   }
 }
 

@@ -1,10 +1,9 @@
 import { compareAsc, format } from "date-fns";
-import Project from "./project";
+import { v4 as uuidv4 } from "uuid";
 
 export default class ToDo {
-  static count = -1;
   constructor(title, message, priority, dueDate, isCompleted) {
-    this.id = ++this.constructor.count;
+    this.id = uuidv4();
     this.title = title;
     this.message = message;
     this.priority = priority;

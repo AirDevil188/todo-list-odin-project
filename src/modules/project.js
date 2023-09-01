@@ -1,7 +1,8 @@
+import { v4 as uuidv4 } from "uuid";
+
 export default class Project {
-  static count = -1;
   constructor(title, todos) {
-    this.id = ++this.constructor.count;
+    this.id = uuidv4();
     this.title = title;
     this.todos = [];
   }
@@ -34,3 +35,5 @@ export default class Project {
 }
 
 export const inboxProject = new Project("Inbox");
+inboxProject.id = "0";
+Object.freeze(inboxProject);
