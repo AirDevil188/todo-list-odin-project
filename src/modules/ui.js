@@ -1,9 +1,10 @@
 import Project, { inboxProject } from "./project";
-import ProjectManager, { projectManager } from "./projectManager";
+import { projectManager } from "./projectManager";
 import ToDo from "./todo";
 import initializeButtons from "./controller/initializeButtons";
 import { id } from "date-fns/locale";
-import activeProject from "./controller/activeProject";
+import setActiveProject from "./controller/activeProject";
+import { renderTasks } from "./controller/view";
 
 export default class UI {
   static loadHome() {
@@ -13,13 +14,10 @@ export default class UI {
   }
 
   static loadProjectManager() {
-    console.log();
-    if (projectManager.projects.length === 0) {
+    if (localStorage.length !== 0) {
       projectManager.add(inboxProject);
-
-      console.log(projectManager);
     } else {
-      return false;
+      projectManager.add(inboxProject);
     }
   }
 
@@ -43,6 +41,8 @@ export default class UI {
 
     mainContainer.appendChild(contentContainer);
   }
+
+  // projects
 
   static appendProjectForm() {
     const projectCreationFormContainer = document.createElement("div");
@@ -71,20 +71,19 @@ export default class UI {
     const projectContainer = document.createElement("div");
     const projectButton = document.createElement("button");
     const deleteButton = document.createElement("span");
-    const editButton = document.createElement("span");
 
     deleteButton.textContent = "delete";
 
     UI.getUserProjectListContainer().appendChild(projectContainer);
-    projectContainer.appendChild(editButton);
     projectContainer.appendChild(deleteButton);
     projectContainer.appendChild(projectButton);
 
     UI.setAttributes(projectContainer, { class: "project-item", "data-id": `${project.id}` });
-    UI.setAttributes(projectButton, { class: "project-button", "data-id": `${project.id}` });
+    UI.setAttributes(projectButton, { class: "project-button project", "data-id": `${project.id}` });
     UI.setAttributes(deleteButton, { class: "material-symbols-outlined delete-button", "data-id": `${project.id}` });
 
-    UI.renderProjects(projectButton);
+    console.log(projectManager);
+    UI.renderProjects();
   }
 
   static createAddProjectButton() {
@@ -108,13 +107,27 @@ export default class UI {
     e.target.parentElement.remove();
   }
 
-  static renderProjects(elem) {
-    for (let i = 1; i < projectManager.projects.length; i++) {
-      elem.textContent = `${projectManager.projects[i].getTitle()}`;
-    }
+  static deleteTaskFromTheDOM(e) {
+    e.target.parentElement.remove();
   }
 
+  static renderProjects() {
+    const projectButtons = document.querySelectorAll(".project");
+    projectButtons.forEach((button, i) => {
+      console.log(button);
+      console.log(projectManager);
+      button.textContent = `${projectManager.projects[i + 1].getTitle()}`;
+    });
+  }
+
+  //
+
+  // tasks
+
   static appendTaskForm() {
+    const date = new Date();
+    const formattedDate = format(date, "dd-LL-yyyy");
+    console.log(formattedDate);
     const taskFormContainer = document.createElement("div");
     const taskFormElement = document.createElement("form");
 
@@ -136,6 +149,7 @@ export default class UI {
     const inputPriorityHigh = document.createElement("input");
 
     const dueDateInput = document.createElement("input");
+    const dueDateLabel = document.createElement("label");
 
     const addTaskIcon = document.createElement("span");
     const cancelTaskIcon = document.createElement("span");
@@ -149,10 +163,12 @@ export default class UI {
     labelPriorityMedium.textContent = "MEDIUM";
     labelPriorityHigh.textContent = "HIGH";
 
+    dueDateLabel.textContent = "DATE: ";
+
     addTaskIcon.textContent = "add_task";
     cancelTaskIcon.textContent = "cancel";
 
-    UI.getMainContainer().appendChild(taskFormContainer);
+    UI.getContentContainer().appendChild(taskFormContainer);
     taskFormContainer.appendChild(taskFormElement);
     taskFormElement.appendChild(titleLabel);
     taskFormElement.appendChild(messageLabel);
@@ -166,50 +182,194 @@ export default class UI {
     labelPriorityLow.appendChild(inputPriorityLow);
     labelPriorityMedium.appendChild(inputPriorityMedium);
     labelPriorityHigh.appendChild(inputPriorityHigh);
-    taskFormElement.appendChild(dueDateInput);
+    taskFormElement.appendChild(dueDateLabel);
+    dueDateLabel.appendChild(dueDateInput);
     taskFormElement.appendChild(addTaskIcon);
     taskFormElement.appendChild(cancelTaskIcon);
 
-    UI.setAttributes(titleInputField, { type: "text", class: "title-input" });
-    UI.setAttributes(messageInputField, { type: "text", class: "message-input" });
+    UI.setAttributes(taskFormContainer, { class: "task-form-container" });
+    UI.setAttributes(taskFormElement, { class: "task-form" });
+    UI.setAttributes(titleLabel, { for: "title-input" });
+    UI.setAttributes(titleInputField, { type: "text", id: "title-input", name: "title-input" });
+    UI.setAttributes(messageLabel, { for: "message-input" });
+    UI.setAttributes(messageInputField, { type: "text", id: "message-input", name: "message-input" });
     UI.setAttributes(priorityContainer, { class: "priority-container" });
-    UI.setAttributes(inputPriorityLow, { type: "radio" });
-    UI.setAttributes(inputPriorityMedium, { type: "radio" });
-    UI.setAttributes(inputPriorityHigh, { type: "radio" });
-    UI.setAttributes(dueDateInput, { type: "date" });
-    UI.setAttributes(addTaskIcon, { class: "material-symbols-outlined" });
-    UI.setAttributes(cancelTaskIcon, { class: "material-symbols-outlined" });
+    UI.setAttributes(labelPriorityLow, { for: "low" });
+    UI.setAttributes(inputPriorityLow, { type: "radio", id: "low", value: "low", name: "priority" });
+    UI.setAttributes(labelPriorityMedium, { for: "medium" });
+    UI.setAttributes(inputPriorityMedium, { type: "radio", id: "medium", value: "medium", name: "priority" });
+    UI.setAttributes(inputPriorityHigh, { for: "high" });
+    UI.setAttributes(inputPriorityHigh, { type: "radio", id: "high", value: "high", name: "priority" });
+    UI.setAttributes(dueDateLabel, { for: "task-date" });
+    UI.setAttributes(dueDateInput, { type: "date", id: "task-date", name: "task-date" });
+    UI.setAttributes(addTaskIcon, { class: "add-task-button material-symbols-outlined" });
+    UI.setAttributes(cancelTaskIcon, { class: "cancel-task-button material-symbols-outlined" });
+  }
+
+  static editTaskForm(e) {
+    const selectedTask = setActiveProject().findById(e.target.dataset.id);
+    const selectedTaskItemContainer = e.target.parentElement;
+    const taskFormContainerEdit = document.createElement("div");
+    const taskFormElementEdit = document.createElement("form");
+
+    // todo input properties
+    const titleLabelEdit = document.createElement("label");
+    const messageLabelEdit = document.createElement("label");
+
+    const titleInputFieldEdit = document.createElement("input");
+    const messageInputFieldEdit = document.createElement("input");
+
+    const priorityContainerEdit = document.createElement("div");
+
+    const labelPriorityLowEdit = document.createElement("label");
+    const labelPriorityMediumEdit = document.createElement("label");
+    const labelPriorityHighEdit = document.createElement("label");
+
+    const inputPriorityLowEdit = document.createElement("input");
+    const inputPriorityMediumEdit = document.createElement("input");
+    const inputPriorityHighEdit = document.createElement("input");
+
+    const dueDateInputEdit = document.createElement("input");
+    const dueDateLabelEdit = document.createElement("label");
+
+    const addTaskIconEdit = document.createElement("span");
+    const cancelTaskIconEdit = document.createElement("span");
+
+    //
+
+    titleLabelEdit.textContent = "TITLE: ";
+    messageLabelEdit.textContent = "DETAILS: ";
+
+    labelPriorityLowEdit.textContent = "LOW";
+    labelPriorityMediumEdit.textContent = "MEDIUM";
+    labelPriorityHighEdit.textContent = "HIGH";
+
+    dueDateLabelEdit.textContent = "DATE: ";
+
+    addTaskIconEdit.textContent = "add_task";
+    cancelTaskIconEdit.textContent = "cancel";
+
+    titleInputFieldEdit.value = selectedTask.getTitle();
+    messageInputFieldEdit.value = selectedTask.getMessage();
+
+    console.log(e.target.parentElement);
+
+    selectedTaskItemContainer.insertAdjacentElement("afterend", taskFormContainerEdit);
+    taskFormContainerEdit.appendChild(taskFormElementEdit);
+    taskFormElementEdit.appendChild(titleLabelEdit);
+    taskFormElementEdit.appendChild(messageLabelEdit);
+    titleLabelEdit.appendChild(titleInputFieldEdit);
+    messageLabelEdit.appendChild(messageInputFieldEdit);
+
+    taskFormElementEdit.appendChild(priorityContainerEdit);
+    priorityContainerEdit.appendChild(labelPriorityLowEdit);
+    priorityContainerEdit.appendChild(labelPriorityMediumEdit);
+    priorityContainerEdit.appendChild(labelPriorityHighEdit);
+    labelPriorityLowEdit.appendChild(inputPriorityLowEdit);
+    labelPriorityMediumEdit.appendChild(inputPriorityMediumEdit);
+    labelPriorityHighEdit.appendChild(inputPriorityHighEdit);
+    taskFormElementEdit.appendChild(dueDateLabelEdit);
+    dueDateLabelEdit.appendChild(dueDateInputEdit);
+    taskFormElementEdit.appendChild(addTaskIconEdit);
+    taskFormElementEdit.appendChild(cancelTaskIconEdit);
+
+    UI.setAttributes(taskFormContainerEdit, { class: "edit-task-form-container", "data-id": `${e.target.dataset.id}` });
+    UI.setAttributes(taskFormElementEdit, { class: "task-form", "data-id": `${e.target.dataset.id}` });
+    UI.setAttributes(titleLabelEdit, { for: "title-input", "data-id": `${e.target.dataset.id}` });
+    UI.setAttributes(titleInputFieldEdit, { type: "text", id: "title-input", name: "title-input", "data-id": `${e.target.dataset.id}` });
+    UI.setAttributes(messageLabelEdit, { for: "message-input" });
+    UI.setAttributes(messageInputFieldEdit, { type: "text", id: "message-input", name: "message-input", "data-id": `${e.target.dataset.id}` });
+    UI.setAttributes(priorityContainerEdit, { class: "priority-container", "data-id": `${e.target.dataset.id}` });
+    UI.setAttributes(labelPriorityLowEdit, { for: "low" });
+    UI.setAttributes(inputPriorityLowEdit, { type: "radio", id: "low", value: "low", "data-id": `${e.target.dataset.id}`, name: "priority" });
+    UI.setAttributes(labelPriorityMediumEdit, { for: "medium" });
+    UI.setAttributes(inputPriorityMediumEdit, { type: "radio", id: "medium", value: "medium", "data-id": `${e.target.dataset.id}`, name: "priority" });
+    UI.setAttributes(inputPriorityHighEdit, { for: "high" });
+    UI.setAttributes(inputPriorityHighEdit, { type: "radio", id: "high", value: "high", "data-id": `${e.target.dataset.id}`, name: "priority" });
+    UI.setAttributes(dueDateLabelEdit, { for: "task-date" });
+    UI.setAttributes(dueDateInputEdit, { type: "date", id: "task-date", name: "task-date", "data-id": `${e.target.dataset.id}`, placeholder: "dd-mm-yyyy", value: "" });
+    UI.setAttributes(addTaskIconEdit, { class: "edit-task-button material-symbols-outlined", "data-id": `${e.target.dataset.id}` });
+    UI.setAttributes(cancelTaskIconEdit, { class: "cancel-task-button material-symbols-outlined", "data-id": `${e.target.dataset.id}` });
+  }
+
+  static toggleTaskVisibility(e, value) {
+    const taskItem = Array.from(document.querySelectorAll(".task-item"));
+    const indexOfTarget = setActiveProject().todos.find((task) => task.id === e.target.dataset.id);
+    const selectedTaskItem = taskItem.find((task) => task.dataset.id === indexOfTarget.id);
+    selectedTaskItem.style.display = `${value}`;
+  }
+
+  static deleteTaskFormFromTheDOM(e) {
+    e.target.parentElement.parentElement.remove();
   }
 
   static addTask() {
-    const titleInput = "sasa";
-    const messageInput = "sasasas";
+    const titleInput = document.querySelector("#title-input").value;
+    const messageInput = document.querySelector("#message-input").value;
+    const priorityInput = document.querySelector('input[type="radio"]:checked').value;
+    const dueDateInput = document.querySelector("#task-date").value;
+    console.log(dueDateInput);
 
-    const task = new ToDo(titleInput, messageInput);
+    const task = new ToDo(titleInput, messageInput, priorityInput, dueDateInput);
 
-    activeProject().add(task);
-    console.log(activeProject());
-    console.log("after adding todo task ", projectManager);
+    setActiveProject().add(task);
+
+    const taskContainer = document.createElement("div");
+    const titleTask = document.createElement("h3");
+    const messageTask = document.createElement("p");
+    const priorityTask = document.createElement("p");
+    const dueDateTask = document.createElement("p");
+    const deleteIcon = document.createElement("span");
+    const editIcon = document.createElement("span");
+
+    UI.setAttributes(taskContainer, { class: "task-item", "data-id": `${task.id}` });
+    UI.setAttributes(titleTask, { class: "title-task", "data-id": `${task.id}` });
+
+    UI.setAttributes(messageTask, { class: "task-message", "data-id": `${task.id}` });
+    UI.setAttributes(priorityTask, { class: "task-priority", "data-id": `${task.id}` });
+    UI.setAttributes(dueDateTask, { class: "task-date", "data-id": `${task.id}` });
+    UI.setAttributes(deleteIcon, { class: "material-symbols-outlined delete-button", "data-id": `${task.id}` });
+    UI.setAttributes(editIcon, { class: "material-symbols-outlined edit-button", "data-id": `${task.id}` });
+
+    editIcon.textContent = "edit";
+    deleteIcon.textContent = "delete";
+
+    UI.getContentContainer().appendChild(taskContainer);
+    taskContainer.appendChild(titleTask);
+    taskContainer.appendChild(messageTask);
+    taskContainer.appendChild(priorityTask);
+    taskContainer.appendChild(dueDateTask);
+    taskContainer.appendChild(editIcon);
+    taskContainer.appendChild(deleteIcon);
+
+    renderTasks();
+  }
+
+  static hideAddTaskButton(value) {
+    document.querySelector(".add-task-to-do-form-button").style.display = "none";
+  }
+
+  static appendAddTaskButton() {
+    const addTaskButton = document.querySelector(".add-task-to-do-form-button");
+    addTaskButton.style.display = "block";
+    addTaskButton.textContent = "Add Task";
+    UI.getMainContainer().appendChild(addTaskButton);
   }
 
   static getMainContainer() {
     return document.querySelector(".main-container");
   }
 
-  static getAddProjectContainer() {
-    return document.querySelector(".add-project-container");
+  static getContentContainer() {
+    return document.querySelector(".content-container");
+  }
+
+  static getAddToDoTaskButton() {
+    return document.querySelector(".add-task-to-do-form-button");
   }
 
   static getUserProjectListContainer() {
     return document.querySelector(".user-project-list");
-  }
-
-  static getProjectsButtonContainer() {
-    return document.querySelector(".button-container");
-  }
-
-  static getProjectItemButton() {
-    return document.querySelector(".project-item");
   }
 
   static openToDoCategoryPage(page, pageButton) {

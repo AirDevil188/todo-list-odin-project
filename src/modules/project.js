@@ -36,4 +36,4 @@ export default class Project {
 
 export const inboxProject = new Project("Inbox");
 inboxProject.id = "0";
-Object.freeze(inboxProject);
+// Object.freeze(inboxProject);

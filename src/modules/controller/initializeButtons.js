@@ -1,10 +1,13 @@
 import UI from "../ui";
-import { activeProject } from "./activeProject";
+import setActiveProject from "./activeProject";
 import deleteProject from "./deleteProject";
-import test from "./activeProject";
+import deleteTask from "./deleteTask";
+import editTask from "./editTask";
+import { updateRenderTasks } from "./view";
 
 export default function initializeButtons() {
   const toDoButtons = document.querySelectorAll(".default-menu-todo-buttons");
+  const mainContainer = document.querySelector(".main-container");
   const spanToDoButtons = document.querySelectorAll(".material-symbols-outlined");
   const spanAndButtons = [...toDoButtons, ...spanToDoButtons];
 
@@ -15,7 +18,8 @@ export default function initializeButtons() {
           toggleActiveButton(e);
           UI.clear();
           UI.openInboxPage();
-          test();
+          setActiveProject();
+          updateRenderTasks();
           break;
         case "Today":
           UI.clear();
@@ -36,10 +40,10 @@ export default function initializeButtons() {
     }
   });
 
-  UI.getMainContainer().addEventListener("click", (e) => {
+  mainContainer.addEventListener("click", (e) => {
     if (e.target.classList.contains("add-task-to-do-form-button")) {
       UI.appendTaskForm();
-      UI.addTask();
+      UI.hideAddTaskButton();
     }
   });
 
@@ -57,12 +61,46 @@ export default function initializeButtons() {
       UI.deleteProjectFromTheDOM(e);
     }
   });
+  mainContainer.addEventListener("click", (e) => {
+    if (e.target.classList.contains("add-task-button")) {
+      UI.addTask();
+      UI.deleteTaskFormFromTheDOM(e);
+      UI.appendAddTaskButton();
+    }
+  });
+
+  mainContainer.addEventListener("click", (e) => {
+    if (e.target.classList.contains("edit-task-button")) {
+      editTask(e);
+      UI.deleteTaskFormFromTheDOM(e);
+      UI.toggleTaskVisibility(e, "block");
+    }
+  });
+
+  mainContainer.addEventListener("click", (e) => {
+    if (e.target.classList.contains("delete-button")) {
+      deleteTask(e);
+      UI.deleteTaskFromTheDOM(e);
+    }
+  });
+
+  mainContainer.addEventListener("click", (e) => {
+    if (e.target.classList.contains("edit-button")) {
+      UI.toggleTaskVisibility(e, "none");
+      UI.editTaskForm(e);
+    }
+  });
+
   UI.getUserProjectListContainer().addEventListener("click", (e) => {
     if (e.target.classList.contains("project-button")) {
       UI.clear();
       toggleActiveButton(e);
       UI.loadToDoContent(`${e.target.textContent}`);
-      test(e);
+      UI.hideAddTaskButton();
+      setActiveProject(e);
+      UI.appendAddTaskButton();
+
+      updateRenderTasks();
     }
   });
 

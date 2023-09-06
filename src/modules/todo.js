@@ -39,8 +39,8 @@ export default class ToDo {
     return this.dueDate;
   }
 
-  setDueDate(dd, mm, yyyy) {
-    this.dueDate = format(new Date(dd, mm, yyyy), "dd-LL-yyyy");
+  setDueDate(value) {
+    this.dueDate = value;
   }
 
   getIsCompleted() {
