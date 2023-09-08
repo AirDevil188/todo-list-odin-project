@@ -1,4 +1,3 @@
-import { set } from "date-fns";
 import setActiveProject from "./activeProject";
 import UI from "../ui";
 import { projectManager } from "../projectManager";
@@ -9,6 +8,7 @@ export function renderTasks() {
   const message = document.querySelectorAll(".task-message");
   const priority = document.querySelectorAll(".task-priority");
   const dueDate = document.querySelectorAll(".task-date");
+
   title.forEach((title, i) => {
     title.textContent = `${setActiveProject().todos[i].getTitle()}`;
   });
@@ -32,6 +32,7 @@ export function updateRenderTasks() {
     const dueDateTask = document.createElement("p");
     const iconEdit = document.createElement("span");
     const iconDelete = document.createElement("span");
+
     UI.getContentContainer().appendChild(taskContainer);
     taskContainer.appendChild(titleTask);
     taskContainer.appendChild(messageTask);
@@ -53,5 +54,14 @@ export function updateRenderTasks() {
 
     renderTasks();
     console.log(projectManager);
+  });
+}
+
+export function renderProjects() {
+  const projectButtons = document.querySelectorAll(".project");
+  projectButtons.forEach((button, i) => {
+    console.log(button);
+    console.log(projectManager);
+    button.textContent = `${projectManager.projects[i + 1].getTitle()}`;
   });
 }

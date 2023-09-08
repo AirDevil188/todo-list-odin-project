@@ -1,10 +1,10 @@
 import Project, { inboxProject } from "./project";
-import { projectManager } from "./projectManager";
+import ProjectManager, { projectManager } from "./projectManager";
 import ToDo from "./todo";
 import initializeButtons from "./controller/initializeButtons";
-import { id } from "date-fns/locale";
 import setActiveProject from "./controller/activeProject";
-import { renderTasks } from "./controller/view";
+import { renderProjects, renderTasks, updateRenderTasks } from "./controller/view";
+import { setData } from "./storage";
 
 export default class UI {
   static loadHome() {
@@ -15,9 +15,10 @@ export default class UI {
 
   static loadProjectManager() {
     if (localStorage.length !== 0) {
-      projectManager.add(inboxProject);
+      // Object.assign(projectManager, getData("project-manager"));
     } else {
       projectManager.add(inboxProject);
+      console.log(projectManager);
     }
   }
 
@@ -68,6 +69,8 @@ export default class UI {
     const projectInputField = document.querySelector(".input-project-popup").value;
     const project = new Project(`${projectInputField}`);
     projectManager.add(project);
+    setData("projects", projectManager.projects);
+
     const projectContainer = document.createElement("div");
     const projectButton = document.createElement("button");
     const deleteButton = document.createElement("span");
@@ -83,7 +86,7 @@ export default class UI {
     UI.setAttributes(deleteButton, { class: "material-symbols-outlined delete-button", "data-id": `${project.id}` });
 
     console.log(projectManager);
-    UI.renderProjects();
+    renderProjects();
   }
 
   static createAddProjectButton() {
@@ -111,23 +114,11 @@ export default class UI {
     e.target.parentElement.remove();
   }
 
-  static renderProjects() {
-    const projectButtons = document.querySelectorAll(".project");
-    projectButtons.forEach((button, i) => {
-      console.log(button);
-      console.log(projectManager);
-      button.textContent = `${projectManager.projects[i + 1].getTitle()}`;
-    });
-  }
-
   //
 
   // tasks
 
   static appendTaskForm() {
-    const date = new Date();
-    const formattedDate = format(date, "dd-LL-yyyy");
-    console.log(formattedDate);
     const taskFormContainer = document.createElement("div");
     const taskFormElement = document.createElement("form");
 
@@ -308,12 +299,13 @@ export default class UI {
     const messageInput = document.querySelector("#message-input").value;
     const priorityInput = document.querySelector('input[type="radio"]:checked').value;
     const dueDateInput = document.querySelector("#task-date").value;
-    console.log(dueDateInput);
 
     const task = new ToDo(titleInput, messageInput, priorityInput, dueDateInput);
 
     setActiveProject().add(task);
+    setData("tasks", setActiveProject().todos);
 
+    setData("project-manager", projectManager);
     const taskContainer = document.createElement("div");
     const titleTask = document.createElement("h3");
     const messageTask = document.createElement("p");
@@ -345,7 +337,7 @@ export default class UI {
     renderTasks();
   }
 
-  static hideAddTaskButton(value) {
+  static hideAddTaskButton() {
     document.querySelector(".add-task-to-do-form-button").style.display = "none";
   }
 

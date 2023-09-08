@@ -99,7 +99,6 @@ export default function initializeButtons() {
       UI.hideAddTaskButton();
       setActiveProject(e);
       UI.appendAddTaskButton();
-
       updateRenderTasks();
     }
   });

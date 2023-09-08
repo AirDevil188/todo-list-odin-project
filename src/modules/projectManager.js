@@ -21,4 +21,4 @@ export default class ProjectManager {
     return this.projects.find((project) => project.id === id);
   }
 }
-export const projectManager = new ProjectManager("All Projects");
+export let projectManager = new ProjectManager("All Projects");
