@@ -16,6 +16,7 @@ export default class UI {
   static loadProjectManager() {
     if (localStorage.length !== 0) {
       // Object.assign(projectManager, getData("project-manager"));
+      projectManager.add(inboxProject);
     } else {
       projectManager.add(inboxProject);
       console.log(projectManager);
