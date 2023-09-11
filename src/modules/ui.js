@@ -1,26 +1,27 @@
-import Project, { inboxProject } from "./project";
-import ProjectManager, { projectManager } from "./projectManager";
+import Project from "./project";
+import { projectManager } from "./projectManager";
 import ToDo from "./todo";
 import initializeButtons from "./controller/initializeButtons";
 import setActiveProject from "./controller/activeProject";
-import { renderProjects, renderTasks, updateRenderTasks } from "./controller/view";
+import { renderProjects, renderTasks } from "./controller/view";
 import { setData } from "./storage";
+import { v4 as uuidv4 } from "uuid";
+import { loadProjectManager } from "./controller/loadProjectManager";
 
 export default class UI {
   static loadHome() {
     UI.openToDoCategoryPage("Inbox", document.querySelector("#button-inbox"));
+    loadProjectManager();
     initializeButtons();
-    UI.loadProjectManager();
+    UI.assignInboxIDToTheButtons();
   }
 
-  static loadProjectManager() {
-    if (localStorage.length !== 0) {
-      // Object.assign(projectManager, getData("project-manager"));
-      projectManager.add(inboxProject);
-    } else {
-      projectManager.add(inboxProject);
-      console.log(projectManager);
-    }
+  static assignInboxIDToTheButtons() {
+    const inboxProjectID = Array.from(projectManager.projects)[0].id;
+    let inboxButton = document.querySelector("#button-inbox");
+    let inboxSpanIcon = document.querySelector(".inbox-icon");
+    inboxButton.setAttribute("data-id", `${inboxProjectID}`);
+    inboxSpanIcon.setAttribute("data-id", `${inboxProjectID}`);
   }
 
   static loadToDoContent(page) {
@@ -68,7 +69,7 @@ export default class UI {
 
   static addProject() {
     const projectInputField = document.querySelector(".input-project-popup").value;
-    const project = new Project(`${projectInputField}`);
+    const project = new Project(uuidv4(), `${projectInputField}`, []);
     projectManager.add(project);
     setData("projects", projectManager.projects);
 
@@ -301,12 +302,12 @@ export default class UI {
     const priorityInput = document.querySelector('input[type="radio"]:checked').value;
     const dueDateInput = document.querySelector("#task-date").value;
 
-    const task = new ToDo(titleInput, messageInput, priorityInput, dueDateInput);
+    const task = new ToDo(uuidv4(), titleInput, messageInput, priorityInput, dueDateInput);
 
     setActiveProject().add(task);
-    setData("tasks", setActiveProject().todos);
+    setActiveProject().sortTasksByDate();
+    setData("projects", projectManager.projects);
 
-    setData("project-manager", projectManager);
     const taskContainer = document.createElement("div");
     const titleTask = document.createElement("h3");
     const messageTask = document.createElement("p");
@@ -335,7 +336,9 @@ export default class UI {
     taskContainer.appendChild(editIcon);
     taskContainer.appendChild(deleteIcon);
 
-    renderTasks();
+    console.log(projectManager);
+
+    renderTasks(setActiveProject());
   }
 
   static hideAddTaskButton() {

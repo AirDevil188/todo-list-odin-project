@@ -4,6 +4,7 @@ import deleteProject from "./deleteProject";
 import deleteTask from "./deleteTask";
 import editTask from "./editTask";
 import { updateRenderTasks } from "./view";
+import { filterByThisWeek, filterByToday } from "./filterTasks";
 
 export default function initializeButtons() {
   const toDoButtons = document.querySelectorAll(".default-menu-todo-buttons");
@@ -15,19 +16,22 @@ export default function initializeButtons() {
     button.addEventListener("click", (e) => {
       switch (e.target.getAttribute("value")) {
         case "Inbox":
+          UI.assignInboxIDToTheButtons();
           toggleActiveButton(e);
           UI.clear();
           UI.openInboxPage();
           setActiveProject();
-          updateRenderTasks();
+          updateRenderTasks(setActiveProject());
           break;
         case "Today":
           UI.clear();
           UI.openTodayPage();
+          filterByToday();
           break;
         case "This Week":
           UI.clear();
           UI.openThisWeekPage();
+          filterByThisWeek();
           break;
       }
     });
@@ -99,7 +103,7 @@ export default function initializeButtons() {
       UI.hideAddTaskButton();
       setActiveProject(e);
       UI.appendAddTaskButton();
-      updateRenderTasks();
+      updateRenderTasks(setActiveProject());
     }
   });
 

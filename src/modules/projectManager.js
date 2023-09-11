@@ -1,5 +1,3 @@
-import Project from "./project";
-
 export default class ProjectManager {
   constructor(title, projects) {
     this.title = title;
@@ -19,6 +17,9 @@ export default class ProjectManager {
   }
   findById(id) {
     return this.projects.find((project) => project.id === id);
+  }
+  getListProject() {
+    return this.projects;
   }
 }
 export let projectManager = new ProjectManager("All Projects");

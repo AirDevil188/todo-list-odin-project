@@ -1,7 +1,14 @@
 import { projectManager } from "../projectManager";
-import setActiveProject from "./activeProject";
+import { setData } from "../storage";
 
 export default function deleteTask(e) {
-  const taskID = setActiveProject().todos.find((task) => task.id === e.target.dataset.id);
-  setActiveProject().remove(taskID.id);
+  projectManager.getListProject().map((project) => {
+    if (typeof project.findById(e.target.dataset.id) !== "undefined") {
+      project.remove(e.target.dataset.id);
+    } else {
+      return false;
+    }
+  });
+  console.log(projectManager);
+  setData("projects", projectManager.projects);
 }

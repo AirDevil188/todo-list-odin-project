@@ -1,13 +1,12 @@
-import { compareAsc, format } from "date-fns";
-import { v4 as uuidv4 } from "uuid";
+import { format } from "date-fns";
 
 export default class ToDo {
-  constructor(title, message, priority, dueDate, isCompleted) {
-    this.id = uuidv4();
+  constructor(id, title, message, priority, dueDate, isCompleted) {
+    this.id = id;
     this.title = title;
     this.message = message;
     this.priority = priority;
-    this.dueDate = dueDate;
+    this.dueDate = format(new Date(dueDate), "MM/dd/yyyy");
     this.isCompleted = isCompleted;
   }
 
@@ -40,7 +39,7 @@ export default class ToDo {
   }
 
   setDueDate(value) {
-    this.dueDate = value;
+    this.dueDate = format(new Date(value), "MM/dd/yyyy");
   }
 
   getIsCompleted() {

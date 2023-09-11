@@ -1,11 +1,10 @@
 import { v4 as uuidv4 } from "uuid";
-import ToDo from "./todo";
-
+import { isToday, isThisWeek } from "date-fns";
 export default class Project {
-  constructor(title, todos) {
-    this.id = uuidv4();
+  constructor(id, title, todos) {
+    this.id = id;
     this.title = title;
-    this.todos = [];
+    this.todos = todos;
   }
 
   add(task) {
@@ -26,15 +25,44 @@ export default class Project {
     return this.todos.find((todo) => todo.id === id);
   }
 
-  findF(findFunction) {
-    return this.todos.find(findFunction);
-  }
-
   getID(elem) {
     return elem.id;
   }
+
+  findSelectedTask(item) {
+    return this.todos.find((task) => task === item.dataset.id);
+  }
+
+  getTasksToday() {
+    return this.todos.filter((task) => {
+      const taskDate = new Date(task.getDueDate());
+      if (isToday(taskDate) === true) {
+        return task;
+      } else {
+        return;
+      }
+    });
+  }
+
+  getTasksThisWeek() {
+    return this.todos.filter((task) => {
+      const taskDate = new Date(task.getDueDate());
+      if (isThisWeek(taskDate, { weekStartsOn: 1 }) === true) {
+        return task;
+      } else {
+        return;
+      }
+    });
+  }
+
+  sortTasksByDate() {
+    this.todos.sort((a, b) => {
+      let dateA = new Date(a.dueDate);
+      let dateB = new Date(b.dueDate);
+
+      return dateA - dateB;
+    });
+  }
 }
 
-export const inboxProject = new Project("Inbox");
-inboxProject.id = "0";
-// Object.freeze(inboxProject);
+export const inboxProject = new Project(uuidv4(), "Inbox", []);
