@@ -30,6 +30,13 @@ body {
   font-variation-settings: "FILL" 0, "wght" 400, "GRAD" 0, "opsz" 48;
 }
 
+/* alert html element */
+.alert {
+  padding: 20px;
+  background-color: #f44336;
+  color: white;
+}
+
 /* header */
 
 header {
@@ -111,10 +118,28 @@ button {
   gap: 1rem;
 }
 
+/* main container */
+.main-container {
+  padding: 1rem 1rem;
+}
+
 /* to-do container for to do tasks */
-.priority-container {
+.task-item {
   display: flex;
-  flex-flow: row;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.left-side-container {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+}
+
+.right-side-container {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
 }
 
 form {

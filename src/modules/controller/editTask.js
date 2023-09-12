@@ -5,7 +5,7 @@ import { setData } from "../storage";
 export default function editTask(e) {
   const titleInput = document.querySelector("#title-input");
   const messageInput = document.querySelector("#message-input");
-  const priorityInput = document.querySelector('input[type="radio"]:checked').value;
+  const priorityInput = document.querySelector(".priority-list").value;
   const dueDateInput = document.querySelector("#task-date");
 
   projectManager.getListProject().map((project) => {

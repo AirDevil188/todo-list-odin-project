@@ -68,16 +68,16 @@ export default function initializeButtons() {
   mainContainer.addEventListener("click", (e) => {
     if (e.target.classList.contains("add-task-button")) {
       UI.addTask();
-      UI.deleteTaskFormFromTheDOM(e);
-      UI.appendAddTaskButton();
+      // UI.deleteTaskFormFromTheDOM(e);
+      // UI.appendAddTaskButton();
     }
   });
 
   mainContainer.addEventListener("click", (e) => {
     if (e.target.classList.contains("edit-task-button")) {
       editTask(e);
-      UI.deleteTaskFormFromTheDOM(e);
-      UI.toggleTaskVisibility(e, "block");
+      UI.deleteTaskFormFromTheDOM(".edit-task-form-container");
+      UI.toggleTaskVisibility(e, "flex");
     }
   });
 
@@ -92,6 +92,7 @@ export default function initializeButtons() {
     if (e.target.classList.contains("edit-button")) {
       UI.toggleTaskVisibility(e, "none");
       UI.editTaskForm(e);
+      UI.hideAddTaskButton();
     }
   });
 

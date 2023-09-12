@@ -31,32 +31,41 @@ export function renderProjects() {
 
 export function updateRenderTasks(project) {
   project.todos.forEach((task, i) => {
+    const iconsContainer = document.createElement("div");
+    const deleteIcon = document.createElement("span");
+    const editIcon = document.createElement("span");
     const taskContainer = document.createElement("div");
     const titleTask = document.createElement("h3");
     const messageTask = document.createElement("p");
+    const rightSideContainer = document.createElement("div");
     const priorityTask = document.createElement("p");
     const dueDateTask = document.createElement("p");
-    const iconEdit = document.createElement("span");
-    const iconDelete = document.createElement("span");
 
     UI.getContentContainer().appendChild(taskContainer);
-    taskContainer.appendChild(titleTask);
+    taskContainer.appendChild(iconsContainer);
+    iconsContainer.appendChild(deleteIcon);
+    iconsContainer.appendChild(editIcon);
+    iconsContainer.appendChild(titleTask);
     taskContainer.appendChild(messageTask);
-    taskContainer.appendChild(priorityTask);
-    taskContainer.appendChild(dueDateTask);
-    taskContainer.appendChild(iconEdit);
-    taskContainer.appendChild(iconDelete);
+    taskContainer.appendChild(rightSideContainer);
+    rightSideContainer.appendChild(dueDateTask);
+    rightSideContainer.appendChild(priorityTask);
 
-    iconEdit.textContent = "edit";
-    iconDelete.textContent = "delete";
+    messageTask.style.display = "none";
 
+    editIcon.textContent = "edit";
+    deleteIcon.textContent = "delete";
+
+    UI.setAttributes(iconsContainer, { class: "left-side-container", "data-id": `${task.id}` });
+    UI.setAttributes(deleteIcon, { class: "material-symbols-outlined delete-button", "data-id": `${task.id}` });
+    UI.setAttributes(editIcon, { class: "material-symbols-outlined edit-button", "data-id": `${task.id}` });
     UI.setAttributes(taskContainer, { class: "task-item", "data-id": `${task.id}` });
     UI.setAttributes(titleTask, { class: "title-task", "data-id": `${task.id}` });
     UI.setAttributes(messageTask, { class: "task-message", "data-id": `${task.id}` });
+
+    UI.setAttributes(rightSideContainer, { class: "right-side-container", "data-id": `${task.id}` });
     UI.setAttributes(priorityTask, { class: "task-priority", "data-id": `${task.id}` });
     UI.setAttributes(dueDateTask, { class: "task-date", "data-id": `${task.id}` });
-    UI.setAttributes(iconEdit, { class: "material-symbols-outlined edit-button", "data-id": `${task.id}` });
-    UI.setAttributes(iconDelete, { class: "material-symbols-outlined delete-button", "data-id": `${task.id}` });
 
     renderTasks(project);
     console.log(projectManager);

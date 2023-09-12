@@ -6,7 +6,7 @@ export default class ToDo {
     this.title = title;
     this.message = message;
     this.priority = priority;
-    this.dueDate = format(new Date(dueDate), "MM/dd/yyyy");
+    this.dueDate = dueDate;
     this.isCompleted = isCompleted;
   }
 
@@ -39,7 +39,7 @@ export default class ToDo {
   }
 
   setDueDate(value) {
-    this.dueDate = format(new Date(value), "MM/dd/yyyy");
+    this.dueDate = value;
   }
 
   getIsCompleted() {
