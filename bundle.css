@@ -1,8 +1,12 @@
-@import url(https://fonts.googleapis.com/css2?family=Roboto+Mono:wght@400;500;600;700&display=swap);
+@import url(https://fonts.googleapis.com/css2?family=Indie+Flower&family=Roboto+Slab:wght@300;400;500;600;700;900&display=swap);
 :root {
-  --header-bg-color: #404040;
+  --header-bg-color: #fff;
+  /* --header-bg-color: #4c1d95; */
   --submit-button-color: #4caf50;
   --cancel-button-color: #f44336;
+  --nav-button-color: #4c1d95;
+  --left-side-container: #4c1d95;
+  --font-color: #212427;
 }
 
 /* general basic */
@@ -20,13 +24,15 @@ html {
 body {
   padding: 0;
   margin: 0;
-  font-family: "Roboto Mono", monospace;
+  font-family: "Roboto Slab", serif;
 }
 
 /* google icons */
 
 .material-symbols-outlined {
   font-variation-settings: "FILL" 0, "wght" 400, "GRAD" 0, "opsz" 48;
+  background: none;
+  cursor: pointer;
 }
 
 /* alert html element */
@@ -42,79 +48,128 @@ header {
   text-transform: uppercase;
   color: white;
   background-color: var(--header-bg-color);
-  padding: 1rem;
+  padding-left: 1rem;
+}
+
+.header-container h1 {
+  font-family: "Indie Flower", cursive;
+  color: #4c1d95;
+  font-size: 2.1rem;
 }
 
 /* button */
 button {
-  width: 100%;
   color: #000;
   text-align: left;
   cursor: pointer;
   display: block;
   border: none;
+  padding: 0;
+}
+
+ul {
+  display: flex;
+  flex-flow: column;
+  gap: 1rem;
+  padding: 0;
+  margin: 0;
+}
+
+.hamburger {
+  display: none;
+  position: absolute;
+  z-index: 100;
+  top: 0.5rem;
+  right: 0.5rem;
   padding: 1rem;
-  background-color: #ccc;
+  background: var(--header-bg-color);
+  cursor: pointer;
+  color: #fff;
+  background-color: #fff;
+  border-radius: 15px;
+  transition: all 0.2s ease;
+}
+
+.hamburger > span {
+  background-color: #4c1d95;
+}
+
+.default-menu-todo-buttons,
+.add-project-input-button,
+.project-button {
+  background-color: var(--nav-button-color);
+  color: #fff;
 }
 
 /* grid-container */
 
 #grid-container {
   display: grid;
+  min-height: calc(100vh - 98px);
   grid-template-columns: 1fr 3fr;
 }
 
 .content-container {
   display: flex;
   flex-flow: column wrap;
+  padding: 1rem;
+  gap: 3rem;
 }
 
 /* left side content */
 /* left-side-content-container */
 
 .left-side-content-container {
+  margin: 1rem;
+  border-radius: 25px;
   grid-area: 1/1/1/2;
-  min-height: 100vh;
-  background-color: #ccc;
+  min-width: 280px;
+  background-color: var(--left-side-container);
   padding: 1rem;
-  line-height: 1.9;
+  color: #fff;
 }
 
-/* button container - left side*/
-.default-todo-list-nav button {
+.navigation-menu > button {
   display: flex;
-  flex-flow: row wrap;
-  gap: 1rem;
   align-items: center;
   font-weight: 600;
+  text-transform: uppercase;
+  gap: 1rem;
+  color: #fff;
 }
+
+/* styles when nav button is clicked */
+
+.clicked > .material-symbols-outlined {
+  background-color: #2e1065;
+  padding: 0.1rem;
+}
+
+.clicked {
+  background-color: #2e1065;
+  border-radius: 25px;
+  padding: 0.8rem;
+}
+
 /* container for 'projects' */
 .add-project-container {
   display: flex;
   gap: 10px;
 }
-/* button container and buttons for adding projects */
-.button-container > button {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  width: 120px;
-  font-weight: 900;
-  text-transform: uppercase;
-  text-align: center;
-  height: 23px;
-  border: none;
-  border-radius: 15px;
-}
 
-.button-container {
+/*projects */
+
+.user-project-list {
   display: flex;
-  flex-flow: row wrap;
+  gap: 1rem;
+  flex-flow: column wrap;
 }
 
 .project-item {
   display: flex;
-  gap: 1rem;
+  align-items: center;
+  gap: 0.5rem;
+  margin-top: 0.5rem;
 }
 
 /* main container */
@@ -122,29 +177,79 @@ button {
   padding: 1rem 1rem;
 }
 
+.modal,
+.edit-modal {
+  width: 300px;
+  height: 350px;
+  text-align: center;
+  border: none;
+  border-radius: 15px;
+  padding: 1rem;
+  box-shadow: rgba(0, 0, 0, 0.25) 0px 54px 55px, rgba(0, 0, 0, 0.12) 0px -12px 30px, rgba(0, 0, 0, 0.12) 0px 4px 6px, rgba(0, 0, 0, 0.17) 0px 12px 13px, rgba(0, 0, 0, 0.09) 0px -3px 5px;
+}
+
+.add-task-button,
+.cancel-task-button,
+.edit-task-button,
+.cancel-edit-task-button {
+  background-color: #4c1d95;
+  cursor: pointer;
+  font-size: 1rem;
+  color: #fff;
+  border: none;
+  border-radius: 15px;
+  padding: 10px;
+  text-align: center;
+  min-height: 30px;
+  min-width: 120px;
+}
+/* task form */
+.modal::backdrop,
+.edit-modal::backdrop {
+  opacity: 0.9;
+  background: #fff;
+}
+
 /* to-do container for to do tasks */
 .task-item {
   display: flex;
+  padding: 0.5rem;
+  border-radius: 25px;
   justify-content: space-between;
   align-items: center;
+  box-shadow: rgba(50, 50, 93, 0.25) 0px 13px 27px -5px, rgba(0, 0, 0, 0.3) 0px 8px 16px -8px;
+  color: #4c1d95;
 }
 
-.left-side-container {
+/* tasks */
+/* contents of task */
+.task-content {
   display: flex;
+  flex-flow: column wrap;
   align-items: center;
-  gap: 1rem;
 }
 
-.right-side-container {
-  display: flex;
-  align-items: center;
-  gap: 1rem;
+.task-item h3,
+p {
+  color: var(--font-color);
+}
+
+.task-message {
+  font-style: italic;
 }
 
 form {
   display: flex;
-  flex-flow: row wrap;
-  gap: 1rem;
+  flex-flow: column wrap;
+  gap: 1.2rem;
+}
+
+textarea,
+input,
+select {
+  padding: 0.5rem;
+  border: 1px solid #4c1d95;
+  border-radius: 15px;
 }
 
 .to-do-task-button-container {
@@ -163,21 +268,49 @@ form {
   justify-content: center;
 }
 
-.add-to-do-task-button {
-  background-color: var(--submit-button-color);
+.left-side-container {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
 }
 
-.cancel-to-do-task-button {
-  background-color: var(--cancel-button-color);
+.right-side-container {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
 }
 
-.project-button {
-  padding: 0;
-}
+/* for tablets */
+@media (max-width: 650px) {
+  .hamburger {
+    display: block;
+  }
 
-textarea,
-input {
-  resize: none;
+  #grid-container {
+    display: block;
+  }
+
+  .left-side-content-container {
+    display: none;
+  }
+
+  .expanded-nav {
+    display: block;
+    transform: translateY(0);
+    animation: scroll 0.5s ease-out 0s 1 normal forwards;
+  }
+
+  @keyframes scroll {
+    0% {
+      opacity: 0;
+      transform: translateY(-250px);
+    }
+
+    100% {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
 }
 
 
