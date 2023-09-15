@@ -1,13 +1,18 @@
 import { format } from "date-fns";
 
 export default class ToDo {
-  constructor(id, title, message, priority, dueDate, isCompleted) {
+  constructor(id, projectName, title, message, priority, dueDate, isCompleted) {
     this.id = id;
+    this.projectName = projectName;
     this.title = title;
     this.message = message;
     this.priority = priority;
     this.dueDate = dueDate;
     this.isCompleted = isCompleted;
+  }
+
+  getProjectName() {
+    return this.projectName;
   }
 
   getTitle() {

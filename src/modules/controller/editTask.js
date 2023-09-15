@@ -3,6 +3,7 @@ import { renderTasks } from "./view";
 import { setData } from "../storage";
 
 export default function editTask(e) {
+  console.log(e.target);
   const titleInput = document.querySelector("#title-input");
   const messageInput = document.querySelector("#message-input");
   const priorityInput = document.querySelector(".priority-list").value;
@@ -10,7 +11,6 @@ export default function editTask(e) {
 
   projectManager.getListProject().map((project) => {
     if (typeof project.findById(e.target.dataset.id) !== "undefined") {
-      console.log(project.findById(e.target.dataset.id));
       project.findById(e.target.dataset.id).setTitle(`${titleInput.value}`);
       project.findById(e.target.dataset.id).setMessage(`${messageInput.value}`);
       project.findById(e.target.dataset.id).setPriority(`${priorityInput}`);

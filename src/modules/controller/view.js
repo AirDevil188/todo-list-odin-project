@@ -35,6 +35,7 @@ export function updateRenderTasks(project) {
     const deleteIcon = document.createElement("span");
     const editIcon = document.createElement("span");
     const taskContainer = document.createElement("div");
+    const taskContents = document.createElement("div");
     const titleTask = document.createElement("h3");
     const messageTask = document.createElement("p");
     const rightSideContainer = document.createElement("div");
@@ -45,21 +46,23 @@ export function updateRenderTasks(project) {
     taskContainer.appendChild(iconsContainer);
     iconsContainer.appendChild(deleteIcon);
     iconsContainer.appendChild(editIcon);
-    iconsContainer.appendChild(titleTask);
-    taskContainer.appendChild(messageTask);
+    taskContainer.appendChild(taskContents);
+    taskContents.appendChild(titleTask);
+    taskContents.appendChild(messageTask);
     taskContainer.appendChild(rightSideContainer);
     rightSideContainer.appendChild(dueDateTask);
     rightSideContainer.appendChild(priorityTask);
 
-    messageTask.style.display = "none";
-
     editIcon.textContent = "edit";
     deleteIcon.textContent = "delete";
+
+    messageTask.style.display = "none";
 
     UI.setAttributes(iconsContainer, { class: "left-side-container", "data-id": `${task.id}` });
     UI.setAttributes(deleteIcon, { class: "material-symbols-outlined delete-button", "data-id": `${task.id}` });
     UI.setAttributes(editIcon, { class: "material-symbols-outlined edit-button", "data-id": `${task.id}` });
     UI.setAttributes(taskContainer, { class: "task-item", "data-id": `${task.id}` });
+    UI.setAttributes(taskContents, { class: "task-content", "data-id": `${task.id}` });
     UI.setAttributes(titleTask, { class: "title-task", "data-id": `${task.id}` });
     UI.setAttributes(messageTask, { class: "task-message", "data-id": `${task.id}` });
 
@@ -86,7 +89,7 @@ export function updateRenderProjects() {
 
     UI.setAttributes(projectItemContainer, { class: "project-item", "data-id": `${projectManager.projects[i].id}` });
     UI.setAttributes(iconDelete, { class: "material-symbols-outlined delete-button", "data-id": `${projectManager.projects[i].id}` });
-    UI.setAttributes(projectButton, { class: "project-button project", "data-id": `${projectManager.projects[i].id}` });
+    UI.setAttributes(projectButton, { class: "project-button project default-menu-todo-buttons ", "data-id": `${projectManager.projects[i].id}` });
 
     renderProjects();
   }

@@ -9,23 +9,26 @@
   <body>
     <header>
       <div class="header-container">
-        <h1>ToDo List</h1>
+        <h1>ToDo List </h1>
+        <button class="hamburger" onclick="">
+    <span class="material-symbols-outlined hamburger"> menu </span>
+  </button>
       </div>
     </header>
     <div id="grid-container">
-      <div class="left-side-content-container">
-        <div class="default-todo-list-nav">
-          <button class="default-menu-todo-buttons project-button active" id="button-inbox" value="Inbox" data-id=""><span class="material-symbols-outlined project-button inbox-icon" value="Inbox" data-id="">inbox</span>Inbox</button>
-          <button class="default-menu-todo-buttons" id="button-today" value="Today"><span class="material-symbols-outlined" value="Today">today</span> Today</button>
-          <button class="default-menu-todo-buttons" id="button-week" value="This Week"><span class="material-symbols-outlined" value="This Week">date_range</span> This Week</button>
+      <div class="left-side-content-container" id="left-side-content-container">
+        <ul class="navigation-menu">
+            <button class="default-menu-todo-buttons project-button clicked active" id="button-inbox" value="Inbox" data-id=""><span class=" material-symbols-outlined project-button inbox-icon" value="Inbox" data-id="">inbox</span>Inbox</button>
+            <button class="default-menu-todo-buttons" id="button-today" value="Today"><span class="material-symbols-outlined" value="Today">today</span> Today</button>
+            <button class="default-menu-todo-buttons" id="button-week" value="This Week"><span class="material-symbols-outlined" value="This Week">date_range</span> This Week</button>
+          <h2>Projects</h2>
+          <div class="user-project-list">
+            <button class="add-project-input-button"><span class="material-symbols-outlined add-project-input-button">add</span>Add Project</button>
+          </div>
+        </ul>
         </div>
-        <h2>Projects</h2>
-        <div class="add-project-container"></div>
-        <div class="user-project-list">
-          <button class="add-project-input-button"><span class="material-symbols-outlined add-project-input-button">add</span>Add Project</button>
-        </div>
+        <div class="main-container"></div>
       </div>
-      <div class="main-container"></div>
     </div>
   </body>
 </html>

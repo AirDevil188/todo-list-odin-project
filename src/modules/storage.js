@@ -14,5 +14,5 @@ export function transformRawDataProjects() {
 }
 
 export function transformRawDataTasks(project) {
-  return project.todos.map((data) => new ToDo(data.id, data.title, data.message, data.priority, data.dueDate));
+  return project.todos.map((data) => new ToDo(data.id, data.projectName, data.title, data.message, data.priority, data.dueDate));
 }
