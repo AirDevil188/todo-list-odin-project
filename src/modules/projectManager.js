@@ -21,5 +21,10 @@ export default class ProjectManager {
   getListProject() {
     return this.projects;
   }
+  getAllTitles() {
+    return this.projects.map((project) => {
+      return project.title;
+    });
+  }
 }
 export let projectManager = new ProjectManager("All Projects");

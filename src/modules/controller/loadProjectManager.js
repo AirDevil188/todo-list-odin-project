@@ -5,6 +5,8 @@ import UI from "../ui";
 import { updateRenderProjects, updateRenderTasks } from "./view";
 import setActiveProject from "./activeProject";
 
+/* based  on this function we control loading of the localStorage */
+
 export function loadProjectManager() {
   if (localStorage.length !== 0) {
     transformRawDataProjects().map((project) => {

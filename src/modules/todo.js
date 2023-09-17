@@ -1,14 +1,13 @@
 import { format } from "date-fns";
 
 export default class ToDo {
-  constructor(id, projectName, title, message, priority, dueDate, isCompleted) {
+  constructor(id, projectName, title, message, priority, dueDate) {
     this.id = id;
     this.projectName = projectName;
     this.title = title;
     this.message = message;
     this.priority = priority;
     this.dueDate = dueDate;
-    this.isCompleted = isCompleted;
   }
 
   getProjectName() {
@@ -45,9 +44,5 @@ export default class ToDo {
 
   setDueDate(value) {
     this.dueDate = value;
-  }
-
-  getIsCompleted() {
-    return this.isCompleted;
   }
 }

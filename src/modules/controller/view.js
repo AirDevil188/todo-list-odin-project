@@ -1,30 +1,48 @@
 import UI from "../ui";
 import { projectManager } from "../projectManager";
 
+/* function to render tasks on the screen */
 export function renderTasks(project) {
   const title = document.querySelectorAll(".title-task");
   const message = document.querySelectorAll(".task-message");
   const priority = document.querySelectorAll(".task-priority");
   const dueDate = document.querySelectorAll(".task-date");
 
-  title.forEach((title, i) => {
-    title.textContent = `${project.todos[i].getTitle()}`;
-  });
-  message.forEach((message, i) => {
-    message.textContent = `${project.todos[i].getMessage()}`;
-  });
-  priority.forEach((priority, i) => {
-    priority.textContent = `${project.todos[i].getPriority()}`;
-  });
-  dueDate.forEach((dueDate, i) => {
-    dueDate.textContent = `${project.todos[i].getDueDate()}`;
-  });
+  for (let i = 0; i < project.todos.length; i++) {
+    if (typeof title[i] !== "undefined") {
+      title[i].textContent = `${project.todos[i].getTitle()}`;
+    } else {
+      return;
+    }
+  }
+
+  for (let i = 0; i < project.todos.length; i++) {
+    if (typeof message[i] !== "undefined") {
+      message[i].textContent = `${project.todos[i].getMessage()}`;
+    } else {
+      return;
+    }
+    for (let i = 0; i < project.todos.length; i++) {
+      if (typeof priority[i] !== "undefined") {
+        priority[i].textContent = `${project.todos[i].getPriority()}`;
+      } else {
+        return;
+      }
+    }
+    for (let i = 0; i < project.todos.length; i++) {
+      if (typeof dueDate[i] !== "undefined") {
+        dueDate[i].textContent = `${project.todos[i].getDueDate()}`;
+      } else {
+        return;
+      }
+    }
+  }
 }
 
+/* function to render projects on the screen */
 export function renderProjects() {
   const projectButtons = document.querySelectorAll(".project");
   projectButtons.forEach((button, i) => {
-    console.log(projectManager);
     button.textContent = `${projectManager.projects[i + 1].getTitle()}`;
   });
 }
@@ -70,8 +88,16 @@ export function updateRenderTasks(project) {
     UI.setAttributes(priorityTask, { class: "task-priority", "data-id": `${task.id}` });
     UI.setAttributes(dueDateTask, { class: "task-date", "data-id": `${task.id}` });
 
+    /* dark mode  */
+    if (document.body.classList.contains("dark-mode-active")) {
+      taskContainer.classList.add("dark-mode-active");
+      titleTask.classList.add("dark-mode-active");
+      messageTask.classList.add("dark-mode-active");
+      dueDateTask.classList.add("dark-mode-active");
+      priorityTask.classList.add("dark-mode-active");
+    }
+
     renderTasks(project);
-    console.log(projectManager);
   });
 }
 

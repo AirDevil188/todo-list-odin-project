@@ -1,6 +1,7 @@
 import { projectManager } from "../projectManager";
 import { setData } from "../storage";
 
+/* function that we use to deleteTasks based on data-id attribute */
 export default function deleteTask(e) {
   projectManager.getListProject().map((project) => {
     if (typeof project.findById(e.target.dataset.id) !== "undefined") {
@@ -9,6 +10,5 @@ export default function deleteTask(e) {
       return false;
     }
   });
-  console.log(projectManager);
   setData("projects", projectManager.projects);
 }

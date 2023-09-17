@@ -1,6 +1,7 @@
 import { projectManager } from "../projectManager";
 import UI from "../ui";
 
+/* function that we use to filter tasks based on todays date that we use on "Today" page*/
 export function filterByToday() {
   projectManager.projects.map((project) => {
     project.getTasksToday().map((task) => {
@@ -43,6 +44,7 @@ export function filterByToday() {
       UI.setAttributes(deleteIcon, { class: "material-symbols-outlined delete-button", "data-id": `${task.id}` });
       UI.setAttributes(editIcon, { class: "material-symbols-outlined edit-button", "data-id": `${task.id}` });
       UI.setAttributes(taskContainer, { class: "task-item", "data-id": `${task.id}` });
+      UI.setAttributes(projectName, { class: "project-name", "data-id": `${task.id}` });
       UI.setAttributes(taskContents, { class: "task-content", "data-id": `${task.id}` });
       UI.setAttributes(titleTask, { class: "title-task", "data-id": `${task.id}` });
       UI.setAttributes(messageTask, { class: "task-message", "data-id": `${task.id}` });
@@ -50,12 +52,25 @@ export function filterByToday() {
       UI.setAttributes(rightSideContainer, { class: "right-side-container", "data-id": `${task.id}` });
       UI.setAttributes(priorityTask, { class: "task-priority", "data-id": `${task.id}` });
       UI.setAttributes(dueDateTask, { class: "task-date", "data-id": `${task.id}` });
+
+      /* dark mode dates */
+
+      if (document.body.classList.contains("dark-mode-active")) {
+        taskContainer.classList.add("dark-mode-active");
+        titleTask.classList.add("dark-mode-active");
+        messageTask.classList.add("dark-mode-active");
+        dueDateTask.classList.add("dark-mode-active");
+        priorityTask.classList.add("dark-mode-active");
+        projectName.classList.add("dark-mode-active");
+      }
     });
   });
 }
 
+/* function that we use to filter tasks based on this week date that we use on "This Week" page*/
 export function filterByThisWeek() {
   projectManager.projects.map((project) => {
+    /* method to sort tasks from lower date to higher one */
     project.sortTasksByDate();
 
     project.getTasksThisWeek().map((task) => {
@@ -98,6 +113,7 @@ export function filterByThisWeek() {
       UI.setAttributes(deleteIcon, { class: "material-symbols-outlined delete-button", "data-id": `${task.id}` });
       UI.setAttributes(editIcon, { class: "material-symbols-outlined edit-button", "data-id": `${task.id}` });
       UI.setAttributes(taskContainer, { class: "task-item", "data-id": `${task.id}` });
+      UI.setAttributes(projectName, { class: "project-name", "data-id": `${task.id}` });
       UI.setAttributes(taskContents, { class: "task-content", "data-id": `${task.id}` });
       UI.setAttributes(titleTask, { class: "title-task", "data-id": `${task.id}` });
       UI.setAttributes(messageTask, { class: "task-message", "data-id": `${task.id}` });
@@ -105,6 +121,16 @@ export function filterByThisWeek() {
       UI.setAttributes(rightSideContainer, { class: "right-side-container", "data-id": `${task.id}` });
       UI.setAttributes(priorityTask, { class: "task-priority", "data-id": `${task.id}` });
       UI.setAttributes(dueDateTask, { class: "task-date", "data-id": `${task.id}` });
+
+      /* dark mode dates */
+      if (document.body.classList.contains("dark-mode-active")) {
+        taskContainer.classList.add("dark-mode-active");
+        titleTask.classList.add("dark-mode-active");
+        messageTask.classList.add("dark-mode-active");
+        dueDateTask.classList.add("dark-mode-active");
+        priorityTask.classList.add("dark-mode-active");
+        projectName.classList.add("dark-mode-active");
+      }
     });
   });
 }

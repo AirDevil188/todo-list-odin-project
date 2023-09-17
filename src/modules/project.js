@@ -25,14 +25,6 @@ export default class Project {
     return this.todos.find((todo) => todo.id === id);
   }
 
-  getID(elem) {
-    return elem.id;
-  }
-
-  findSelectedTask(item) {
-    return this.todos.find((task) => task === item.dataset.id);
-  }
-
   getTasksToday() {
     return this.todos.filter((task) => {
       const taskDate = new Date(task.getDueDate());

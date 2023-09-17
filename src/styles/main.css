@@ -1,10 +1,12 @@
 :root {
   --header-bg-color: #fff;
-  /* --header-bg-color: #4c1d95; */
+  --background-light-theme-color: #edeade;
+  --background-dark-theme-color: #121212;
+  --items-dark-theme-color: #212121;
   --submit-button-color: #4caf50;
   --cancel-button-color: #f44336;
-  --nav-button-color: #4c1d95;
-  --left-side-container: #4c1d95;
+  --primary-accent-color: #4c1d95;
+  --clicked-button-color: #2e1065;
   --font-color: #212427;
 }
 
@@ -21,10 +23,13 @@ html {
 }
 
 body {
+  background-color: var(--background-light-theme-color);
   padding: 0;
   margin: 0;
-  font-family: "Roboto Slab", serif;
+  font-family: "Roboto Slab", serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Oxygen, Ubuntu, Cantarell, "Open Sans", "Helvetica Neue", sans-serif;
 }
+
+/* importing fonts */
 
 @import url("https://fonts.googleapis.com/css2?family=Indie+Flower&family=Roboto+Slab:wght@300;400;500;600;700;900&display=swap");
 
@@ -36,26 +41,36 @@ body {
   cursor: pointer;
 }
 
-/* alert html element */
-.alert {
-  padding: 20px;
-  background-color: #f44336;
-  color: white;
-}
-
 /* header */
 
 header {
   text-transform: uppercase;
   color: white;
-  background-color: var(--header-bg-color);
-  padding-left: 1rem;
+  margin-left: 1rem;
 }
 
 .header-container h1 {
   font-family: "Indie Flower", cursive;
-  color: #4c1d95;
+  color: var(--primary-accent-color);
   font-size: 2.1rem;
+}
+
+/* footer */
+
+footer {
+  display: flex;
+  justify-content: center;
+}
+
+.footer-container {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.github-logo {
+  width: 30px;
+  height: 30px;
 }
 
 /* button */
@@ -68,6 +83,27 @@ button {
   padding: 0;
 }
 
+/* form */
+form {
+  display: flex;
+  flex-flow: column wrap;
+  gap: 1.2rem;
+}
+
+textarea,
+input,
+select {
+  padding: 0.5rem;
+  border: 1px solid var(--primary-accent-color);
+  border-radius: 15px;
+}
+
+/* google icons */
+/* this pseudo element disables the ugly blue "selection" background on my icons (when holding the left click) */
+::selection {
+  color: none;
+  background: none;
+}
 ul {
   display: flex;
   flex-flow: column;
@@ -76,39 +112,100 @@ ul {
   margin: 0;
 }
 
-.hamburger {
+.navigation-menu > button {
+  display: flex;
+  align-items: center;
+  font-weight: 600;
+  text-transform: uppercase;
+  gap: 1rem;
+  color: #fff;
+}
+
+.navigation-menu > h2 {
+  text-transform: uppercase;
+}
+
+/*hamburger button */
+
+.hamburger-button {
   display: none;
   position: absolute;
   z-index: 100;
-  top: 0.5rem;
-  right: 0.5rem;
+  top: 1rem;
+  right: 1rem;
   padding: 1rem;
   background: var(--header-bg-color);
   cursor: pointer;
   color: #fff;
   background-color: #fff;
   border-radius: 15px;
-  transition: all 0.2s ease;
 }
 
-.hamburger > span {
-  background-color: #4c1d95;
+.hamburger-button > span {
+  background-color: var(--primary-accent-color);
 }
+
+/* dark-mode button */
+
+.dark-mode {
+  position: absolute;
+  z-index: 100;
+  top: 1rem;
+  right: 1rem;
+  padding: 1rem;
+  background: var(--header-bg-color);
+  cursor: pointer;
+  color: #fff;
+  background-color: var(--primary-accent-color);
+  border-radius: 15px;
+}
+
+.dark-mode > span {
+  background-color: var(--primary-accent-color);
+}
+
+/* css selectors  for project input button, buttons in the left content container for navigation, and buttons that represent buttons for new projects that are created */
 
 .default-menu-todo-buttons,
 .add-project-input-button,
 .project-button {
   background-color: var(--nav-button-color);
   color: #fff;
+  text-transform: uppercase;
+}
+
+/* styles when nav button is clicked */
+
+.clicked > .material-symbols-outlined {
+  background-color: #2e1065;
+  padding: 0.1rem;
+}
+
+.clicked {
+  background-color: #2e1065;
+  border-radius: 25px;
+  padding: 0.8rem;
+}
+/* add project button (on the left side) */
+
+.add-project-input-button {
+  font-weight: 600;
 }
 
 /* grid-container */
 
 #grid-container {
   display: grid;
-  min-height: calc(100vh - 98px);
+  min-height: calc(100vh - 130px);
   grid-template-columns: 1fr 3fr;
 }
+
+/* main container */
+.main-container {
+  padding: 1rem 1rem;
+}
+
+/* content container (where we append tasks) */
 
 .content-container {
   display: flex;
@@ -125,32 +222,12 @@ ul {
   border-radius: 25px;
   grid-area: 1/1/1/2;
   min-width: 280px;
-  background-color: var(--left-side-container);
+  background-color: var(--primary-accent-color);
   padding: 1rem;
   color: #fff;
 }
 
-.navigation-menu > button {
-  display: flex;
-  align-items: center;
-  font-weight: 600;
-  text-transform: uppercase;
-  gap: 1rem;
-  color: #fff;
-}
-
-/* styles when nav button is clicked */
-
-.clicked > .material-symbols-outlined {
-  background-color: #2e1065;
-  padding: 0.1rem;
-}
-
-.clicked {
-  background-color: #2e1065;
-  border-radius: 25px;
-  padding: 0.8rem;
-}
+/*projects */
 
 /* container for 'projects' */
 .add-project-container {
@@ -158,7 +235,7 @@ ul {
   gap: 10px;
 }
 
-/*projects */
+/* container where new projects are appended */
 
 .user-project-list {
   display: flex;
@@ -166,18 +243,34 @@ ul {
   flex-flow: column wrap;
 }
 
+.user-project-list > button {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  font-weight: 600;
+}
+
+.user-project-list > span {
+  display: flex;
+  gap: 1rem;
+}
+
+/* input form for creating new projects */
+.project-creation-form-container {
+  display: flex;
+  align-items: center;
+  gap: 5px;
+}
+
+/* project items (elements) */
 .project-item {
   display: flex;
   align-items: center;
-  gap: 0.5rem;
+  gap: 1rem;
   margin-top: 0.5rem;
 }
 
-/* main container */
-.main-container {
-  padding: 1rem 1rem;
-}
-
+/* popup dialog element (modal) for "creating" and "editing" tasks */
 .modal,
 .edit-modal {
   width: 300px;
@@ -189,6 +282,14 @@ ul {
   box-shadow: rgba(0, 0, 0, 0.25) 0px 54px 55px, rgba(0, 0, 0, 0.12) 0px -12px 30px, rgba(0, 0, 0, 0.12) 0px 4px 6px, rgba(0, 0, 0, 0.17) 0px 12px 13px, rgba(0, 0, 0, 0.09) 0px -3px 5px;
 }
 
+/* styles for dialog (modal) element for the background */
+.modal::backdrop,
+.edit-modal::backdrop {
+  opacity: 0.9;
+  background: #fff;
+}
+
+/* css selectors for adding, canceling, editing and canceling editing tasks */
 .add-task-button,
 .cancel-task-button,
 .edit-task-button,
@@ -204,11 +305,9 @@ ul {
   min-height: 30px;
   min-width: 120px;
 }
-/* task form */
-.modal::backdrop,
-.edit-modal::backdrop {
-  opacity: 0.9;
-  background: #fff;
+
+.add-task-to-do-form-button {
+  font-size: 2rem;
 }
 
 /* to-do container for to do tasks */
@@ -219,10 +318,11 @@ ul {
   justify-content: space-between;
   align-items: center;
   box-shadow: rgba(50, 50, 93, 0.25) 0px 13px 27px -5px, rgba(0, 0, 0, 0.3) 0px 8px 16px -8px;
-  color: #4c1d95;
+  color: var(--primary-accent-color);
 }
 
 /* tasks */
+
 /* contents of task */
 .task-content {
   display: flex;
@@ -230,29 +330,25 @@ ul {
   align-items: center;
 }
 
+/* task elements (container) */
+
 .task-item h3,
 p {
   color: var(--font-color);
 }
 
+.title-task,
+.title-message,
+.task-date {
+  white-space: nowrap;
+}
+
 .task-message {
   font-style: italic;
+  font-size: 1rem;
 }
 
-form {
-  display: flex;
-  flex-flow: column wrap;
-  gap: 1.2rem;
-}
-
-textarea,
-input,
-select {
-  padding: 0.5rem;
-  border: 1px solid #4c1d95;
-  border-radius: 15px;
-}
-
+/* container where my buttons for adding and canceling my tasks are located */
 .to-do-task-button-container {
   display: flex;
   flex-flow: row wrap;
@@ -281,10 +377,65 @@ select {
   gap: 1rem;
 }
 
-/* for tablets */
-@media (max-width: 650px) {
-  .hamburger {
+/* dark mode */
+
+.dark-mode-active .dark-mode {
+  background-color: var(--primary-accent-color);
+}
+
+.dark-mode-active {
+  background-color: var(--background-dark-theme-color);
+  color: white;
+}
+
+.dark-mode-active .task-item {
+  background-color: var(--items-dark-theme-color);
+  color: white;
+  box-shadow: none;
+}
+
+.dark-mode-active .title-task,
+.dark-mode-active .task-message,
+.dark-mode-active .task-date,
+.dark-mode-active .task-priority,
+.dark-mode-active .project-name {
+  background-color: var(--items-dark-theme-color);
+  color: white;
+}
+
+.dark-mode-active::backdrop {
+  background: var(--background-dark-theme-color);
+  opacity: 1;
+}
+
+.dark-mode-active .modal,
+.dark-mode-active .edit-modal {
+  background: var(--items-dark-theme-color);
+  box-shadow: none;
+}
+
+.dark-mode-active .add-task-to-do-form-button {
+  color: white;
+}
+
+/* for smaller screens */
+@media (max-width: 760px) {
+  .hamburger-button {
     display: block;
+    background-color: var(--primary-accent-color);
+  }
+
+  .dark-mode {
+    position: absolute;
+    z-index: 100;
+    top: 1rem;
+    right: 6rem;
+    padding: 1rem;
+    background: var(--header-bg-color);
+    cursor: pointer;
+    color: #fff;
+    background-color: var(--primary-accent-color);
+    border-radius: 15px;
   }
 
   #grid-container {
@@ -301,6 +452,35 @@ select {
     animation: scroll 0.5s ease-out 0s 1 normal forwards;
   }
 
+  @media (max-width: 430px) {
+    .task-item {
+      display: flex;
+      flex-flow: column;
+    }
+
+    .title-task {
+      font-size: 1rem;
+      margin: 1rem;
+    }
+
+    .hamburger-button,
+    .dark-mode {
+      font-size: 1.5rem;
+    }
+  }
+
+  @media (max-width: 350px) {
+    .hamburger-button,
+    .dark-mode {
+      font-size: 1rem;
+    }
+
+    .dark-mode {
+      right: 5rem;
+    }
+  }
+
+  /* animation for.hamburger-button navbar */
   @keyframes scroll {
     0% {
       opacity: 0;
