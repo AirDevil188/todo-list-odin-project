@@ -10,7 +10,7 @@ https://airdevil188.github.io/todo-list-odin-project/
 
 - Option for adding, deleting and editing tasks
 - Option for adding and deleting projects
-- Form validation for creating both tasks and objects
+- Form validation for creating both tasks and projects
 - Filtering tasks by today and this week
 - Local storage saving
 - Fully responsive for the smaller screens (tablets and mobile screens)
